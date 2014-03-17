@@ -25,20 +25,6 @@ NSString * const kSetupInfoKeyTimeout = @"SetupInfoKeyTimeout";
 
 #pragma mark - Set up methods
 
-- (void)centerCurrentCountryInMapView:(MKMapView *)mapView
-{
-    CLLocationCoordinate2D zoomLocation;
-    zoomLocation.latitude = 61.814664;
-    zoomLocation.longitude = 9.294434;
-    
-    CLLocationDistance locationDistance = 500000.0;
-    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(zoomLocation,
-                                                                       locationDistance,
-                                                                       locationDistance);
-    MKCoordinateRegion adjustedRegion = [mapView regionThatFits:viewRegion];
-    [mapView setRegion:adjustedRegion animated:YES];    
-}
-
 - (void)centerMapView:(MKMapView *)mapView usingCoordinate:(CLLocationCoordinate2D)coordinate
 {
     CLLocationDistance locationDistance = 1000.0;
