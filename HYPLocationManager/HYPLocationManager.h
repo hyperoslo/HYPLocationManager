@@ -1,13 +1,12 @@
 //
 //  HYPLocation.h
-//  DansaniPlus
 //
 //  Created by Elvis Nunez on 4/4/13.
 //  Copyright (c) 2013 Hyper. All rights reserved.
 //
 
-#import <CoreLocation/CoreLocation.h>
-#import <MapKit/MapKit.h>
+@import CoreLocation;
+@import MapKit;
 
 @protocol HYPLocationManagerDelegate;
 
