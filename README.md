@@ -1,7 +1,7 @@
 HYPLocationManager
 ==================
 
-HYPLocationManager is a easy to use interface to use CLLocationManager. If you need to get your current coordinates, or show a specific coordinate on a map, or even get directions from your current location to anywhere, we got you covered.
+HYPLocationManager is an easy to use interface for CLLocationManager. If you need to get your current coordinates, or show a specific coordinate on a map, or even get directions from your current location to anywhere, we got you covered.
 
 # Headers
 
