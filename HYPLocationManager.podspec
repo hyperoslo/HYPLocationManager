@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name = "HYPLocationManager"
   s.version = "0.1.0"
-  s.summary = "The easiert way to use CLLocationManager."
+  s.summary = "The easiest way to use CLLocationManager."
   s.homepage = "https://github.com/hyperoslo/HYPLocationManager"
   s.license = {
     :type => 'MIT',
