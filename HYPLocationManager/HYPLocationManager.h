@@ -13,7 +13,6 @@
 @interface HYPLocationManager : NSObject
 @property (nonatomic, weak) id <HYPLocationManagerDelegate> delegate;
 - (void)showCurrentLocation;
-- (void)centerCurrentCountryInMapView:(MKMapView *)mapView;
 - (void)centerMapView:(MKMapView *)mapView usingCoordinate:(CLLocationCoordinate2D)coordinate;
 - (void)showDirectionsToCoordinate:(CLLocationCoordinate2D)coordinate locationName:(NSString *)locationName;
 @end
