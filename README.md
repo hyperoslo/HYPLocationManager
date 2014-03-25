@@ -3,22 +3,31 @@ HYPLocationManager
 
 HYPLocationManager is an easy to use interface for CLLocationManager. If you need to get your current coordinates, or show a specific coordinate on a map, or even get directions from your current location to anywhere, we got you covered.
 
-# Headers
+### How to get my current location with **HYPLocationManager**?
 
 ``` objc
-- (void)showCurrentLocation;
-- (void)centerMapView:(MKMapView *)mapView usingCoordinate:(CLLocationCoordinate2D)coordinate;
-- (void)showDirectionsToCoordinate:(CLLocationCoordinate2D)coordinate locationName:(NSString *)locationName;
+- (IBAction)showMyCurrentLocation
+{
+    HYPLocationManager *manager = [[HYPLocationManager alloc] init];
+    manager.delegate = self;
+    [manager showCurrentLocation];
+}
+
+#pragma mark - HYPLocationManagerDelegate
+
+- (void)locationManager:(HYPLocationManager *)locationManager didUpdateCoordinateRegion:(MKCoordinateRegion)coordinateRegion
+{
+    // do something with your location,
+    // or show it in a mapView
+    [locationManager centerMapView:self.mapView usingCoordinate:coordinateRegion.center];
+}
 ```
 
-# Delegate
-
-Implement the delegate to get updates for your current location.
+### How to get directions to Hyper from my current location?
 
 ``` objc
-@protocol HYPLocationManagerDelegate <NSObject>
-- (void)locationManager:(HYPLocationManager *)locationManager didUpdateCoordinateRegion:(MKCoordinateRegion)coordinateRegion;
-@end
+HYPLocationManager *manager = [[HYPLocationManager alloc] init];
+[manager showDirectionsfromCoordinate:myCoordinate toLocationNamed:@"Maridalsveien 87"];
 ```
 
 License
