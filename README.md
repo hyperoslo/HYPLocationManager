@@ -19,7 +19,7 @@ HYPLocationManager is an easy to use interface for CLLocationManager. If you nee
 
 - (void)locationManager:(HYPLocationManager *)locationManager didUpdateCoordinateRegion:(MKCoordinateRegion)coordinateRegion
 {
-    // do something with your location, or show it in a mapView like this
+    // do something with your coordinates, or show them in a mapView by doing this
     [locationManager centerMapView:self.mapView usingCoordinate:coordinateRegion.center];
 }
 ```
