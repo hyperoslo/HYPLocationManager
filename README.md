@@ -6,6 +6,8 @@ HYPLocationManager is an easy to use interface for CLLocationManager. If you nee
 ### How to get my current location with **HYPLocationManager**?
 
 ``` objc
+#pragma mark - Actions
+
 - (IBAction)showMyCurrentLocation
 {
     HYPLocationManager *manager = [[HYPLocationManager alloc] init];
@@ -17,8 +19,7 @@ HYPLocationManager is an easy to use interface for CLLocationManager. If you nee
 
 - (void)locationManager:(HYPLocationManager *)locationManager didUpdateCoordinateRegion:(MKCoordinateRegion)coordinateRegion
 {
-    // do something with your location,
-    // or show it in a mapView
+    // do something with your location, or show it in a mapView like this
     [locationManager centerMapView:self.mapView usingCoordinate:coordinateRegion.center];
 }
 ```
