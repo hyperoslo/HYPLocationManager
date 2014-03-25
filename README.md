@@ -29,7 +29,7 @@ didUpdateCoordinateRegion:(MKCoordinateRegion)coordinateRegion
 
 ``` objc
 HYPLocationManager *manager = [[HYPLocationManager alloc] init];
-[manager showDirectionsfromCoordinate:myCoordinate toLocationNamed:@"Maridalsveien 87"];
+[manager showDirectionsToCoordinate:hyperCoordinate named:@"Hyper"];
 ```
 
 License
