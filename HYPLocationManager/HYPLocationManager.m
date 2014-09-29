@@ -40,9 +40,9 @@ NSString * const kSetupInfoKeyTimeout = @"SetupInfoKeyTimeout";
 {
     if (!_setupInfo) {
         _setupInfo = [NSMutableDictionary dictionary];
-        [_setupInfo setObject:@(100.0) forKey:kSetupInfoKeyDistanceFilter];
-        [_setupInfo setObject:@(100) forKey:kSetupInfoKeyTimeout];
-        [_setupInfo setObject:@(kCLLocationAccuracyHundredMeters) forKey:kSetupInfoKeyAccuracy];
+        _setupInfo[kSetupInfoKeyDistanceFilter] = @(100.0);
+        _setupInfo[kSetupInfoKeyTimeout] = @(100);
+        _setupInfo[kSetupInfoKeyAccuracy] = @(kCLLocationAccuracyHundredMeters);
     }
     return _setupInfo;
 }
@@ -52,20 +52,28 @@ NSString * const kSetupInfoKeyTimeout = @"SetupInfoKeyTimeout";
     if (!_locationManager) {
         _locationManager = [[CLLocationManager alloc] init];
         _locationManager.delegate = self;
-        _locationManager.desiredAccuracy = [[self.setupInfo objectForKey:kSetupInfoKeyAccuracy] doubleValue];
+        _locationManager.desiredAccuracy = [(self.setupInfo)[kSetupInfoKeyAccuracy] doubleValue];
     }
     return _locationManager;
 }
 
 - (void)showCurrentLocation
 {
+    if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+        [self.locationManager requestWhenInUseAuthorization];
+    } else {
+        [self startShowingCurrentLocation];
+    }
+}
+
+- (void)startShowingCurrentLocation
+{
     self.metersPerMile = CUSTOMER_METERS_PER_MILE;
 
     [self stopUpdatingLocation:NSLocalizedString(@"Starting new location", @"New location")];
 
-    // Start updating location
     [self.locationManager startUpdatingLocation];
-    [self performSelector:@selector(stopUpdatingLocation:) withObject:@"Timed Out" afterDelay:[[self.setupInfo objectForKey:kSetupInfoKeyTimeout] doubleValue]];
+    [self performSelector:@selector(stopUpdatingLocation:) withObject:@"Timed Out" afterDelay:[(self.setupInfo)[kSetupInfoKeyTimeout] doubleValue]];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
@@ -96,6 +104,16 @@ NSString * const kSetupInfoKeyTimeout = @"SetupInfoKeyTimeout";
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(stopUpdatingLocation:) object:nil];
 }
 
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+{
+    if (status == kCLAuthorizationStatusDenied ||
+        status == kCLAuthorizationStatusRestricted) {
+        // Handle user not accepting sharing location
+    } else {
+        [self startShowingCurrentLocation];
+    }
+}
+
 #pragma mark - Directions
 
 - (void)showDirectionsToCoordinate:(CLLocationCoordinate2D)coordinate locationName:(NSString *)locationName
@@ -105,9 +123,8 @@ NSString * const kSetupInfoKeyTimeout = @"SetupInfoKeyTimeout";
         MKMapItem *currentLocation = [MKMapItem mapItemForCurrentLocation];
         MKMapItem *toLocation = [[MKMapItem alloc] initWithPlacemark:[[MKPlacemark alloc] initWithCoordinate:coordinate addressDictionary:nil]];
         toLocation.name = locationName;
-        [MKMapItem openMapsWithItems:[NSArray arrayWithObjects:currentLocation, toLocation, nil]
-                       launchOptions:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:MKLaunchOptionsDirectionsModeDriving, [NSNumber numberWithBool:YES], nil]
-                                                                 forKeys:[NSArray arrayWithObjects:MKLaunchOptionsDirectionsModeKey, MKLaunchOptionsShowsTrafficKey, nil]]];
+        [MKMapItem openMapsWithItems:@[currentLocation, toLocation]
+                       launchOptions:@{MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving, MKLaunchOptionsShowsTrafficKey: @YES}];
     } else {
         NSMutableString *mapURL = [NSMutableString stringWithString:@"http://maps.google.com/maps?"];
         [mapURL appendFormat:@"saddr=Current Location"];
